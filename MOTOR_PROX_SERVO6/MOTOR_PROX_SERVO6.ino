@@ -19,16 +19,18 @@ const int TriggerPin = 6;
 
 int steps = 2;
 int direccion = 3;
-int reset = 11;
+int reset = 12;
 int pasos = 200;
 int moviments = 3500;
 int Po = 0;
+int i=1;
 
 
 int dir = 1;
 int convert;
 
-//int button = 11;
+int button = 8;
+int buttonState = 1;
 
 // the setup routine runs once when you press reset:
 void setup() {
@@ -45,7 +47,7 @@ void setup() {
   pinMode(steps, OUTPUT);
   pinMode(direccion, OUTPUT);
   pinMode(reset, OUTPUT);
-//  pinMode(button, INPUT_PULLUP);
+  pinMode(button, INPUT_PULLUP);
 
   //Posicio inici
 
@@ -53,14 +55,13 @@ void setup() {
   delay(100);
   digitalWrite(reset, HIGH);   //Cuando reset se encuentre en HIGH el motor arrancará y leerá los comandos enviados.
   digitalWrite(direccion, dir);
-
-  for (int i = 0; i < 200; i++)  {   //Equivale al numero de vueltas (200 es 360º grados) o micropasos
+  while (buttonState == 1) {
+    i++;   //Equivale al numero de vueltas (200 es 360º grados) o micropasos
     digitalWrite(steps, HIGH);  // This LOW to HIGH change is what creates the
     digitalWrite(steps, LOW); // al A4988 de avanzar una vez por cada pulso de energia.
     delayMicroseconds(VELOCIDAD * 2); // Regula la velocidad, cuanto mas bajo mas velocidad.
-  //  int a = digitalRead(button);
- //   Serial.println(a);
-   
+
+    buttonState = digitalRead(button);
   }
 }
 
@@ -74,7 +75,7 @@ void Sensor() {
     // llegir
     // tell servo to go to position in variable 'pos'
     cm = bestValue; //inicialitza el valor
-    Serial.print(bestValue); 
+    Serial.print(bestValue);
 
     cm = ping(TriggerPin, EchoPin);
     Serial.print("Distancia: ");
