@@ -1,3 +1,4 @@
+int brightnessValue;
 int ledPin = 3;
 
 void setup()
@@ -8,14 +9,22 @@ void setup()
 }
 
 void loop() {
-  if (millis() % 1000 == 0) {
-    for (int i = 0; i < 256; i++) {
-      analogWrite (6, i);
+  constrain(brightnessValue, 0, 255); //limit the value (0 - 255)
+  //INCREASE THE BRIGHTNESS
+  if (millis() % 1 == 0) { //Everytime...
+    if (millis() % 560 < 256) { //If the residu is lower than 256 (max. brightess value of a led)
+      brightnessValue ++; //increase 1 the brightness
+      delay(1); //do it once per milli
     }
-  } 
-  if (millis()%1000==500){
-     for(int i=255; i>0;i--){
-      analogWrite(6, i);
+    //DECREASE THE BRIGHTNESS
+    if (millis() % 560 > 255) { //If the residu is higher than 255...
+      brightnessValue --; //decrease 1 the brightness
+      delay(1); 
     }
-  }  
+    delay(1);
+  }
+  analogWrite(pinLeds, brightnessValue); //Make led show the corresponent brightness
 }
+
+
+
